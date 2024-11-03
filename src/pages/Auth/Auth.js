@@ -4,7 +4,7 @@ import Form from "./Form";
 const Auth = ({ navigation }) => {
   return (
     <View style={{ backgroundColor: "black", flex: 1 }}>
-      <Form />
+      <Form navigation={navigation} />
     </View>
   );
 };

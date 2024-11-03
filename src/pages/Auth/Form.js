@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   ScrollView,
   View,
@@ -8,7 +8,11 @@ import {
   TextInput,
 } from "react-native";
 import AuthHeading from "./AuthHeading";
-const Form = () => {
+import handleSubmit from "./SubmitForm";
+import { UserContext } from "../../Global/Context/Context";
+const Form = ({ navigation }) => {
+  const { setUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({
     name: "",
     username: "",
@@ -22,12 +26,73 @@ const Form = () => {
       [field]: newtext,
     });
   };
+  const handleSubmitCheck = () => {
+    if (page === "Register") {
+      // const check = /^[a-z0-9_]{7,}$/;
+      // if (!check.test(input.username)) {
+      //   console.log(
+      //     "The username must contain only lowercase letters, numbers, and underscores, and be more than 6 characters long."
+      //   );
+      // } else if (
+      //   !input.name ||
+      //   !input.password ||
+      //   !input.username ||
+      //   !input.cpassword
+      // ) {
+      //   console.log("input field cannot be empty.");
+      // } else if (input.password.length < 8) {
+      //   console.log("Password must be at least 8 characters long.");
+      // } else if (input.cpassword !== input.password) {
+      //   console.log(
+      //     "Password do not match. Please make sure both fields are identical"
+      //   );
+      // } else {
+      //   if (input.username.length >= 6 && page === "Register") {
+      //     const fetchStatus = async () => {
+      //       const response = await fetch(authURL + "check-username-status", {
+      //         method: "POST",
+      //         headers: {
+      //           "Content-Type": "application/json",
+      //         },
+      //         body: JSON.stringify({ username: input.username }),
+      //       });
+      //       if (response.status === 200) {
+      //         console.log("Username already exists.");
+      //       } else {
+      //         console.log("to Profile");
+      //       }
+      //     };
+      //     fetchStatus();
+      //   }
+      // }
+    } else {
+      //   setLoading(true);
+      //   const response = await handleSubmit(input, "login");
+      //   console.log(response);
+      //   if (response.status) {
+      //     setUser({
+      //       username: response.data.username,
+      //       bio: response.data.bio,
+      //       created_at: response.data.created_at,
+      //       profile_pic_url: response.data.profile_pic_url,
+      //       user_id: response.data.user_id,
+      //       name: response.data.name,
+      //     });
+      //     setLoading(false);
+      //   } else {
+      //     console.log(response.message);
+      //     setLoading(false);
+      //   }
+    }
+    setUser({ username: "aravind", name: "Aravind Vijayan" });
+    navigation.navigate("Home");
+  };
   const handlePage = () => {
     setPage(page === "Login" ? "Register" : "Login");
   };
   return (
     <View style={styles.center}>
-        <AuthHeading  page={page} />
+      <AuthHeading page={page} />
       {page === "Register" && (
         <>
           <Text style={styles.label}>Name</Text>
@@ -66,16 +131,24 @@ const Form = () => {
           ></TextInput>
         </>
       )}
-      <Pressable style={styles.pressable}>
+      <Pressable style={styles.pressable} onPress={handleSubmitCheck}>
         <Text style={{ fontWeight: "bold", fontSize: 15 }}>{page}</Text>
       </Pressable>
       {page === "Login" ? (
         <Text style={styles.text}>
-          Don't have an account?<Text style={{fontWeight:'bold'}} onPress={handlePage}> Register</Text>
+          Don't have an account?
+          <Text style={{ fontWeight: "bold" }} onPress={handlePage}>
+            {" "}
+            Register
+          </Text>
         </Text>
       ) : (
         <Text style={styles.text}>
-          Already have an account?<Text style={{fontWeight:'bold'}} onPress={handlePage}> Login</Text>
+          Already have an account?
+          <Text style={{ fontWeight: "bold" }} onPress={handlePage}>
+            {" "}
+            Login
+          </Text>
         </Text>
       )}
     </View>

@@ -25,7 +25,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
-
 export const uploadProfilePicture = async (file, username) => {
   const storageRef = ref(storage, `profile_pictures/${username}`);
   const uploadTask = uploadBytesResumable(storageRef, file);

@@ -5,7 +5,7 @@ const Home = ({ navigation }) => {
   return (
     <ScrollView>
       <View>
-        <Text></Text>
+        <Text>Hai</Text>
       </View>
     </ScrollView>
   );

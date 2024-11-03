@@ -1,10 +1,10 @@
 import React from "react";
 import { Text,StyleSheet } from "react-native";
-import { AppName } from "../../Global/Links/Links";
+import { AppName, friendURL } from "../../Global/Links/Links";
 const AuthHeading = ({ page }) => {
   return (
     <>
-    <Text>{AppName}</Text>
+    <Text style={{color:'white'}}>{AppName}</Text>
       <Text style={styles.text}>
         {page === "Login"
           ? "Welcome back! Log in to continue your chats and stay connected with your friends."
