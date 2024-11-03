@@ -10,7 +10,7 @@ import {
 import AuthHeading from "./AuthHeading";
 import handleSubmit from "./SubmitForm";
 import { UserContext } from "../../Global/Context/Context";
-const Form = ({ navigation }) => {
+const Form = ({navigation}) => {
   const { setUser } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({
@@ -85,7 +85,7 @@ const Form = ({ navigation }) => {
       //   }
     }
     setUser({ username: "aravind", name: "Aravind Vijayan" });
-    navigation.navigate("Home");
+    navigation.navigate("Home",{screen:"Home"});
   };
   const handlePage = () => {
     setPage(page === "Login" ? "Register" : "Login");
@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     padding: 10,
+    paddingLeft: 20,
     width: "80%",
     borderColor: "white",
     backgroundColor: "white",
@@ -177,6 +178,7 @@ const styles = StyleSheet.create({
   },
   pressable: {
     borderRadius: 10,
+    marginTop:10,
     paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: "white",

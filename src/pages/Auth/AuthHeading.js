@@ -4,7 +4,7 @@ import { AppName, friendURL } from "../../Global/Links/Links";
 const AuthHeading = ({ page }) => {
   return (
     <>
-    <Text style={{color:'white'}}>{AppName}</Text>
+    <Text style={{color:'white',fontWeight:'bold',fontSize:20 }}>{AppName}</Text>
       <Text style={styles.text}>
         {page === "Login"
           ? "Welcome back! Log in to continue your chats and stay connected with your friends."

@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./pages/Home/Home";
 import { UserContext } from "./Global/Context/Context";
 import Auth from "./pages/Auth/Auth";
+import Profile from "./pages/Profile/Profile";
 
 const Stack = createNativeStackNavigator();
 const Routes = () => {
@@ -16,6 +17,7 @@ const Routes = () => {
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Profile" component={Profile} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator
