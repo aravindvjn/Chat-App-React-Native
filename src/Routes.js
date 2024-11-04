@@ -7,6 +7,7 @@ import Auth from "./pages/Auth/Auth";
 import Profile from "./pages/Profile/Profile";
 import { getUser } from "./Global/Services/getUser";
 import ChatRoom from "./pages/ChatRoom/ChatRoom";
+import Notification from "./pages/Notification/Notification";
 
 const Stack = createNativeStackNavigator();
 const Routes = () => {
@@ -28,6 +29,7 @@ const Routes = () => {
           <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="ChatRoom" component={ChatRoom} />
+            <Stack.Screen name="Notification" component={Notification} />
           </>
         ) : (
           <Stack.Screen name="Auth" component={Auth} />

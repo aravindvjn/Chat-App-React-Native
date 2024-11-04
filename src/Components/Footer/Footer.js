@@ -12,7 +12,11 @@ const Footer = ({ navigation }) => {
         size={30}
       />
       <MaterialIcons name="search" size={30} />
-      <MaterialIcons name="notifications" size={30} />
+      <MaterialIcons
+        onPress={() => navigation.navigate("Notification")}
+        name="notifications"
+        size={30}
+      />
       <MaterialIcons
         onPress={() => navigation.navigate("Profile")}
         name="person"

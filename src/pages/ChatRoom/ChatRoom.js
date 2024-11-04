@@ -14,7 +14,7 @@ import {
 import { UserContext } from "../../Global/Context/Context";
 import Chats from "./Chats";
 
-const ChatRoom = ({ route }) => {
+const ChatRoom = ({ route,navigation }) => {
   const chat_id = route.params.chat_id;
   const { user } = useContext(UserContext);
   const [chats, setChats] = useState([]);
@@ -59,7 +59,7 @@ const ChatRoom = ({ route }) => {
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       }}
     >
-      <ChatHeader />
+      <ChatHeader chat_id={chat_id} navigation={navigation} />
       <View style={{ flex: 1,paddingHorizontal:20, paddingBottom:60 }}>
         <ScrollView ref={lastMessageRef} style={{paddingTop:20}} showsVerticalScrollIndicator={false}>
           {chats?.length > 0 &&
