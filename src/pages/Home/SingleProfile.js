@@ -1,25 +1,39 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import Avatar from "../../Components/Avatar/Avatar";
+import { convertToIST } from "../../Global/Services/getDate";
+import { TouchableOpacity } from "react-native";
 
 const SingleProfile = ({
-  username,
-  name,
-  last_message,
-  last_message_sent_at,
-  last_message_is_read,
+  navigation,
+  username = "",
+  friend_name = "Unavailable",
+  last_message = "Tap to send a message.",
+  last_message_time = 0,
+  last_message_is_read = false,
+  friend_profile_pic = "",
+  chat_id=''
 }) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("ChatRoom", {
+          chat_id,
+        })
+      }
+      style={styles.container}
+    >
       <View>
-        <Text style={{ fontWeight: "bold",fontSize:15,marginBottom:5 }}>{name}</Text>
-        <Text style={styles.text}>{last_message}</Text>
-        <Text style={styles.text}>{last_message_sent_at}</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 15, marginBottom: 5 }}>
+          {friend_name}
+        </Text>
+        <Text>{last_message}</Text>
+        <Text style={styles.lastTime}>{convertToIST(last_message_time)}</Text>
       </View>
       <View>
-        <Avatar />
+        <Avatar uri={friend_profile_pic} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -34,8 +48,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "rgba(0,0,0,0.1)",
   },
-  text: {
+  lastTime: {
     opacity: 0.5,
-    fontSize:12
+    fontSize: 12,
   },
 });

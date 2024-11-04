@@ -8,9 +8,9 @@ import {
   TextInput,
 } from "react-native";
 import AuthHeading from "./AuthHeading";
-import handleSubmit from "./SubmitForm";
 import { UserContext } from "../../Global/Context/Context";
-const Form = ({navigation}) => {
+import { authFunction } from "../../Global/Services/authFunction";
+const Form = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({
@@ -26,7 +26,7 @@ const Form = ({navigation}) => {
       [field]: newtext,
     });
   };
-  const handleSubmitCheck = () => {
+  const handleSubmitCheck = async () => {
     if (page === "Register") {
       // const check = /^[a-z0-9_]{7,}$/;
       // if (!check.test(input.username)) {
@@ -66,26 +66,25 @@ const Form = ({navigation}) => {
       //   }
       // }
     } else {
-      //   setLoading(true);
-      //   const response = await handleSubmit(input, "login");
-      //   console.log(response);
-      //   if (response.status) {
-      //     setUser({
-      //       username: response.data.username,
-      //       bio: response.data.bio,
-      //       created_at: response.data.created_at,
-      //       profile_pic_url: response.data.profile_pic_url,
-      //       user_id: response.data.user_id,
-      //       name: response.data.name,
-      //     });
-      //     setLoading(false);
-      //   } else {
-      //     console.log(response.message);
-      //     setLoading(false);
-      //   }
+      setLoading(true);
+      const response = await authFunction(input, "Login");
+      console.log(response);
+      if (response.status === 200) {
+        setUser({
+          username: response.data.username,
+          bio: response.data.bio,
+          created_at: response.data.created_at,
+          profile_pic_url: response.data.profile_pic_url,
+          user_id: response.data.user_id,
+          name: response.data.name,
+        });
+        navigation.navigate("Home", { screen: "Home" });
+        setLoading(false);
+      } else {
+        console.log(response.message);
+        setLoading(false);
+      }
     }
-    setUser({ username: "aravind", name: "Aravind Vijayan" });
-    navigation.navigate("Home",{screen:"Home"});
   };
   const handlePage = () => {
     setPage(page === "Login" ? "Register" : "Login");
@@ -178,7 +177,7 @@ const styles = StyleSheet.create({
   },
   pressable: {
     borderRadius: 10,
-    marginTop:10,
+    marginTop: 10,
     paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: "white",

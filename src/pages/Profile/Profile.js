@@ -1,11 +1,20 @@
 import React from "react";
-import { Text, SafeAreaView } from "react-native";
+import { Text, SafeAreaView, Platform, StatusBar, View } from "react-native";
 import Footer from "../../Components/Footer/Footer";
+import { backgroundColor } from "../../Global/Colors/Colours";
+import ProfileMain from "./ProfileMain";
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
   return (
-    <SafeAreaView>
-      <Footer />
+    <SafeAreaView
+      style={{
+        backgroundColor: backgroundColor,
+        minHeight: "100%",
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+      }}
+    >
+        <ProfileMain navigation={navigation} />
+      <Footer navigation={navigation} />
     </SafeAreaView>
   );
 };

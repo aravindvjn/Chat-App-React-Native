@@ -5,11 +5,8 @@ import HomeHeader from "./HomeHeader";
 import AllProfiles from "./AllProfiles";
 import Footer from "../../Components/Footer/Footer";
 import { backgroundColor } from "../../Global/Colors/Colours";
-import { useNavigation } from "@react-navigation/native";
 
-const Home = () => {
-  const navigation = useNavigation();
-
+const Home = ({ navigation }) => {
   return (
     <SafeAreaView
       style={{
@@ -19,7 +16,7 @@ const Home = () => {
       }}
     >
       <HomeHeader />
-      <AllProfiles />
+      <AllProfiles navigation={navigation} />
       <Footer navigation={navigation} />
     </SafeAreaView>
   );
