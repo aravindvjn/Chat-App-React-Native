@@ -8,8 +8,14 @@ import Profile from "./pages/Profile/Profile";
 import { getUser } from "./Global/Services/getUser";
 import ChatRoom from "./pages/ChatRoom/ChatRoom";
 import Notification from "./pages/Notification/Notification";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Search from "./pages/Search/Search";
+import { backgroundColor } from "./Global/Colors/Colours";
+import SingleUserProfile from "./pages/SingleUser/SingleUserProfile";
 
 const Stack = createNativeStackNavigator();
+const BottomTab = createBottomTabNavigator();
 const Routes = () => {
   const { user, setUser } = useContext(UserContext);
   useEffect(() => {
@@ -26,10 +32,9 @@ const Routes = () => {
       >
         {user ? (
           <>
-          <Stack.Screen name="Profile" component={Profile} />
-            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Main" component={BottomTabNavigator} />
             <Stack.Screen name="ChatRoom" component={ChatRoom} />
-            <Stack.Screen name="Notification" component={Notification} />
+            <Stack.Screen name="UserProfile" component={SingleUserProfile} options={{headerShown:true,title:''}} />
           </>
         ) : (
           <Stack.Screen name="Auth" component={Auth} />
@@ -40,3 +45,54 @@ const Routes = () => {
 };
 
 export default Routes;
+
+const BottomTabNavigator = () => (
+  <BottomTab.Navigator
+    screenOptions={{
+      headerShown: false,
+      tabBarShowLabel: false,
+      tabBarStyle: {
+        backgroundColor: backgroundColor,
+        height: 60,
+      },
+    }}
+    backBehavior="history"
+  >
+    <BottomTab.Screen
+      name="Home"
+      component={Home}
+      options={{
+        tabBarIcon: ({ focus, color, size }) => (
+          <MaterialIcons name="home" size={30} />
+        ),
+      }}
+    />
+    <BottomTab.Screen
+      name="Search"
+      component={Search}
+      options={{
+        tabBarIcon: ({ focus, color, size }) => (
+          <MaterialIcons name="search" size={30} />
+        ),
+      }}
+    />
+    <BottomTab.Screen
+      name="Notification"
+      component={Notification}
+      options={{
+        tabBarIcon: ({ focus, color, size }) => (
+          <MaterialIcons name="notifications" size={30} />
+        ),
+      }}
+    />
+    <BottomTab.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        tabBarIcon: ({ focus, color, size }) => (
+          <MaterialIcons name="person" size={30} />
+        ),
+      }}
+    />
+  </BottomTab.Navigator>
+);

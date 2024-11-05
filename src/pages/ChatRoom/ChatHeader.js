@@ -3,23 +3,7 @@ import { Platform, StyleSheet, Text, View } from "react-native";
 import { backgroundColor } from "../../Global/Colors/Colours";
 import api from "../../Global/Services/services";
 import { MaterialIcons } from "@expo/vector-icons";
-const ChatHeader = ({ chat_id,navigation }) => {
-  const [friend, setFriend] = useState({});
-  useEffect(() => {
-    const fetchFriendName = async () => {
-      try {
-        const response = await api.get(`/chat/user-details/${chat_id}`);
-        if (response.status === 200) {
-          setFriend(response.data);
-        } else {
-          console.log(response.data.message);
-        }
-      } catch (err) {
-        console.log("Error in fetching friend Name.");
-      }
-    };
-    fetchFriendName();
-  }, []);
+const ChatHeader = ({name,navigation }) => {
   return (
     <View style={styles.container}>
       <MaterialIcons
@@ -28,7 +12,7 @@ const ChatHeader = ({ chat_id,navigation }) => {
         size={20}
         onPress={() => navigation.goBack()}
       />
-      <Text style={styles.heading}>{friend?.name}</Text>
+      <Text style={styles.heading}>{name}</Text>
     </View>
   );
 };

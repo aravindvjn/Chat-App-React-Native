@@ -1,16 +1,20 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Avatar from "../../Components/Avatar/Avatar";
+import { TouchableHighlight } from "react-native";
+import { TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const SingleProfiles = ({
-  navigation,
   name = "",
   username = "",
   profile_pic_url = "",
   sender_id = "",
   reqest_id = "",
+  user_id = "",
   size = 1,
 }) => {
+  const navigation = useNavigation();
   const styles = StyleSheet.create({
     container: {
       paddingVertical: 10 * size,
@@ -28,13 +32,24 @@ const SingleProfiles = ({
   });
 
   return (
-    <View style={styles.container}>
-      <Avatar uri={profile_pic_url} size={size} />
-      <View>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.username}>@{username}</Text>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={() =>
+        navigation.navigate("UserProfile", { id: user_id || sender_id })
+      }
+    >
+      <View style={styles.container}>
+        <Avatar uri={profile_pic_url} size={size} />
+        <View>
+          <Text numberOfLines={1} style={styles.name}>
+            {name}
+          </Text>
+          <Text numberOfLines={1} style={styles.username}>
+            @{username}
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

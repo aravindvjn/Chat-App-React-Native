@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { Platform, SafeAreaView, ScrollView, View,StatusBar } from "react-native";
+import {
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  View,
+  StatusBar,
+  Text,
+} from "react-native";
 import ChatHeader from "./ChatHeader";
 import ChatSend from "./ChatSend";
 import { backgroundColor } from "../../Global/Colors/Colours";
@@ -13,14 +20,34 @@ import {
 } from "../../Global/Services/socket";
 import { UserContext } from "../../Global/Context/Context";
 import Chats from "./Chats";
+import api from "../../Global/Services/services";
 
-const ChatRoom = ({ route,navigation }) => {
+const ChatRoom = ({ route, navigation }) => {
   const chat_id = route.params.chat_id;
   const { user } = useContext(UserContext);
   const [chats, setChats] = useState([]);
+  const [friend, setFriend] = useState({});
   const lastMessageRef = useRef(null);
 
   useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollToEnd({
+        behavior: "smooth",
+      });
+    }
+    const fetchFriendName = async () => {
+      try {
+        const response = await api.get(`/chat/user-details/${chat_id}`);
+        if (response.status === 200) {
+          setFriend(response.data);
+        } else {
+          console.log(response.data.message);
+        }
+      } catch (err) {
+        console.log("Error in fetching friend Name.");
+      }
+    };
+    fetchFriendName();
     const connectAndListen = async () => {
       if (!socket) {
         await connectSocket();
@@ -35,7 +62,7 @@ const ChatRoom = ({ route,navigation }) => {
       listenToEvent("new-message" + chat_id, (message) => {
         setChats((prevMessages) => [...prevMessages, message]);
         if (lastMessageRef.current) {
-          lastMessageRef.current.scrollIntoView({
+          lastMessageRef.current.scrollToEnd({
             behavior: "smooth",
           });
         }
@@ -59,16 +86,36 @@ const ChatRoom = ({ route,navigation }) => {
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       }}
     >
-      <ChatHeader chat_id={chat_id} navigation={navigation} />
-      <View style={{ flex: 1,paddingHorizontal:20, paddingBottom:60 }}>
-        <ScrollView ref={lastMessageRef} style={{paddingTop:20}} showsVerticalScrollIndicator={false}>
+      <ChatHeader name={friend?.name} navigation={navigation} />
+      <View style={{ flex: 1, paddingHorizontal: 20, paddingBottom: 60 }}>
+        <ScrollView style={{marginTop:10}}
+          ref={lastMessageRef}
+          showsVerticalScrollIndicator={false}
+        >
           {chats?.length > 0 &&
             chats.map((chat, index) => {
-              return <Chats key={index} {...chat} />;
+              return (
+                <>
+                {index === 0 && chats?.length > 20 && <Text style={{alignSelf:'center', textAlign:'center',padding:7,backgroundColor:'rgba(0,0,0,0.2)',marginBottom:10,borderRadius:3}}>Last {chats?.length} messages.</Text>}
+                  <Chats key={index} {...chat} />
+                  {index === chats.length - 1 && (
+                    <Text style={{alignSelf:'flex-end',opacity:0.4}}>
+                      {chat?.is_read &&
+                        user?.user_id === chat?.sender_id &&
+                        "seen"}
+                    </Text>
+                  )}
+                </>
+              );
             })}
         </ScrollView>
       </View>
-      <ChatSend />
+      <ChatSend
+        lastMessageRef={lastMessageRef}
+        chat_id={chat_id}
+        receiver_id={friend?.user_id}
+        user_id={user?.user_id}
+      />
     </SafeAreaView>
   );
 };

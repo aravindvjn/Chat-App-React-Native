@@ -1,5 +1,5 @@
-// import { BASE_URL } from "@env";
-const BASE_URL = "http://192.168.42.190:8000";
+import { BASE_URL } from "@env";
+
 export const friendURL = BASE_URL + "/friends/";
 export const authURL = BASE_URL + "/auth/";
 export const chatURL = BASE_URL + "/chat/";

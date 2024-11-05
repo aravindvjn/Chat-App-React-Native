@@ -11,7 +11,6 @@ import {
 import { backgroundColor } from "../../Global/Colors/Colours";
 import api from "../../Global/Services/services";
 import SingleProfiles from "./SingleProfiles";
-import Footer from "../../Components/Footer/Footer";
 import Suggested from "./Suggested";
 
 const Notification = ({navigation}) => {
@@ -52,7 +51,6 @@ const Notification = ({navigation}) => {
           </View>
         </ScrollView>
       </View>
-      <Footer navigation={navigation} />
     </SafeAreaView>
   );
 };

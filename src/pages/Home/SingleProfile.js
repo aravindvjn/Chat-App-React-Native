@@ -12,7 +12,7 @@ const SingleProfile = ({
   last_message_time = 0,
   last_message_is_read = false,
   friend_profile_pic = "",
-  chat_id=''
+  chat_id = "",
 }) => {
   return (
     <TouchableOpacity
@@ -27,7 +27,13 @@ const SingleProfile = ({
         <Text style={{ fontWeight: "bold", fontSize: 15, marginBottom: 5 }}>
           {friend_name}
         </Text>
-        <Text>{last_message}</Text>
+        <Text>
+          {last_message
+            ? last_message.length > 30
+              ? last_message.slice(0, 20) + "..."
+              : last_message
+            : "Tap to send a message."}
+        </Text>
         <Text style={styles.lastTime}>{convertToIST(last_message_time)}</Text>
       </View>
       <View>
