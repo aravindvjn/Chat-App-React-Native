@@ -13,9 +13,11 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Search from "./pages/Search/Search";
 import { backgroundColor } from "./Global/Colors/Colours";
 import SingleUserProfile from "./pages/SingleUser/SingleUserProfile";
+import SetProfile from "./pages/Auth/SetProfile";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
+
 const Routes = () => {
   const { user, setUser } = useContext(UserContext);
   useEffect(() => {
@@ -34,10 +36,21 @@ const Routes = () => {
           <>
             <Stack.Screen name="Main" component={BottomTabNavigator} />
             <Stack.Screen name="ChatRoom" component={ChatRoom} />
-            <Stack.Screen name="UserProfile" component={SingleUserProfile} options={{headerShown:true,title:''}} />
+            <Stack.Screen
+              name="UserProfile"
+              component={SingleUserProfile}
+              options={{
+                headerShown: true,
+                title: "",
+                backgroundColor: backgroundColor,
+              }}
+            />
           </>
         ) : (
-          <Stack.Screen name="Auth" component={Auth} />
+          <>
+            <Stack.Screen name="Auth" component={Auth} />
+            <Stack.Screen name="SetProfile" component={SetProfile} />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

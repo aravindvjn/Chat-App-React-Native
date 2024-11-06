@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Platform,
   SafeAreaView,
@@ -12,20 +12,25 @@ import { backgroundColor } from "../../Global/Colors/Colours";
 import api from "../../Global/Services/services";
 import SingleProfiles from "./SingleProfiles";
 import Suggested from "./Suggested";
+import { useFocusEffect, useNavigationState } from "@react-navigation/native";
 
-const Notification = ({navigation}) => {
+const Notification = ({ navigation }) => {
   const [notification, setNotification] = useState([]);
-  useEffect(() => {
-    const fetchNotification = async () => {
-      const response = await api.get("/friends/pending-requests");
-      if (response.status === 200) {
-        setNotification(response.data);
-      } else {
-        console.log(response.data.message);
-      }
-    };
-    fetchNotification();
-  }, []);
+  const [refresh, setRefresh] = useState(false);
+  const fetchNotification = async () => {
+    const response = await api.get("/friends/pending-requests");
+    if (response.status === 200) {
+      setNotification(response.data);
+    } else {
+      setNotification([]);
+      console.log(response.data.message);
+    }
+  };
+  useFocusEffect(
+    useCallback(() => {
+      fetchNotification();
+    }, [refresh])
+  );
   return (
     <SafeAreaView
       style={{
@@ -34,13 +39,22 @@ const Notification = ({navigation}) => {
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       }}
     >
-      <View style={{ flex: 1,padding:20 }}>
+      <View style={{ flex: 1, paddingHorizontal: 20 }}>
         <Text style={styles.heading}>Notifications</Text>
         <ScrollView>
           <View>
             {notification.length > 0 ? (
-              notification.map((noti) => {
-                return <SingleProfiles navigation={navigation} {...noti} />;
+              notification.map((noti, index) => {
+                return (
+                  <SingleProfiles
+                    key={index}
+                    navigation={navigation}
+                    {...noti}
+                    request_id={noti?.request_id}
+                    sender_id={noti?.sender_id}
+                    setRefresh={setRefresh}
+                  />
+                );
               })
             ) : (
               <Text>No Notifications</Text>
@@ -57,10 +71,9 @@ const Notification = ({navigation}) => {
 
 export default Notification;
 const styles = StyleSheet.create({
-  heading:{
-    fontSize:20,
-    paddingVertical:10,
-    fontWeight:'700'
+  heading: {
+    fontSize: 20,
+    paddingVertical: 10,
+    fontWeight: "700",
   },
-
-})
+});

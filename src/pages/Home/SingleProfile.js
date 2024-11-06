@@ -34,7 +34,9 @@ const SingleProfile = ({
               : last_message
             : "Tap to send a message."}
         </Text>
-        <Text style={styles.lastTime}>{convertToIST(last_message_time)}</Text>
+        <Text style={styles.lastTime}>
+          {last_message_time && convertToIST(last_message_time)}
+        </Text>
       </View>
       <View>
         <Avatar uri={friend_profile_pic} />

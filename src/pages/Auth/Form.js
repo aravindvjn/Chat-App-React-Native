@@ -10,6 +10,7 @@ import {
 import AuthHeading from "./AuthHeading";
 import { UserContext } from "../../Global/Context/Context";
 import { authFunction } from "../../Global/Services/authFunction";
+import api from "../../Global/Services/services";
 const Form = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
@@ -28,43 +29,39 @@ const Form = ({ navigation }) => {
   };
   const handleSubmitCheck = async () => {
     if (page === "Register") {
-      // const check = /^[a-z0-9_]{7,}$/;
-      // if (!check.test(input.username)) {
-      //   console.log(
-      //     "The username must contain only lowercase letters, numbers, and underscores, and be more than 6 characters long."
-      //   );
-      // } else if (
-      //   !input.name ||
-      //   !input.password ||
-      //   !input.username ||
-      //   !input.cpassword
-      // ) {
-      //   console.log("input field cannot be empty.");
-      // } else if (input.password.length < 8) {
-      //   console.log("Password must be at least 8 characters long.");
-      // } else if (input.cpassword !== input.password) {
-      //   console.log(
-      //     "Password do not match. Please make sure both fields are identical"
-      //   );
-      // } else {
-      //   if (input.username.length >= 6 && page === "Register") {
-      //     const fetchStatus = async () => {
-      //       const response = await fetch(authURL + "check-username-status", {
-      //         method: "POST",
-      //         headers: {
-      //           "Content-Type": "application/json",
-      //         },
-      //         body: JSON.stringify({ username: input.username }),
-      //       });
-      //       if (response.status === 200) {
-      //         console.log("Username already exists.");
-      //       } else {
-      //         console.log("to Profile");
-      //       }
-      //     };
-      //     fetchStatus();
-      //   }
-      // }
+      const check = /^[a-z0-9_]{7,}$/;
+      if (!check.test(input.username)) {
+        console.log(
+          "The username must contain only lowercase letters, numbers, and underscores, and be more than 6 characters long."
+        );
+      } else if (
+        !input.name ||
+        !input.password ||
+        !input.username ||
+        !input.cpassword
+      ) {
+        console.log("input field cannot be empty.");
+      } else if (input.password.length < 8) {
+        console.log("Password must be at least 8 characters long.");
+      } else if (input.cpassword !== input.password) {
+        console.log(
+          "Password do not match. Please make sure both fields are identical"
+        );
+      } else {
+        if (input.username.length >= 6 && page === "Register") {
+          const fetchStatus = async () => {
+            const response = await api.post("/auth/check-username-status", {
+              username: input.username,
+            });
+            if (response.status === 200) {
+              console.log("Username already exists.");
+            } else {
+              console.log("to Profile");
+            }
+          };
+          fetchStatus();
+        }
+      }
     } else {
       setLoading(true);
       const response = await authFunction(input, "Login");
@@ -78,7 +75,7 @@ const Form = ({ navigation }) => {
           user_id: response.data.user_id,
           name: response.data.name,
         });
-        navigation.navigate("Home", { screen: "Home" });
+        navigation.navigate("Home");
         setLoading(false);
       } else {
         console.log(response.message);

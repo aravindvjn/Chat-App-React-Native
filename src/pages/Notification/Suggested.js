@@ -48,7 +48,7 @@ const Suggested = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
       ) : (
-        <Text style={{textAlign:'center'}}>Loading...</Text>
+        <Text style={{textAlign:'center',opacity:0.6}}>Loading...</Text>
       )}
     </View>
   );

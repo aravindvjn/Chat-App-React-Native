@@ -88,24 +88,38 @@ const ChatRoom = ({ route, navigation }) => {
     >
       <ChatHeader name={friend?.name} navigation={navigation} />
       <View style={{ flex: 1, paddingHorizontal: 20, paddingBottom: 60 }}>
-        <ScrollView style={{marginTop:10}}
+        <ScrollView
+          style={{ marginTop: 10 }}
           ref={lastMessageRef}
           showsVerticalScrollIndicator={false}
         >
           {chats?.length > 0 &&
             chats.map((chat, index) => {
               return (
-                <>
-                {index === 0 && chats?.length > 20 && <Text style={{alignSelf:'center', textAlign:'center',padding:7,backgroundColor:'rgba(0,0,0,0.2)',marginBottom:10,borderRadius:3}}>Last {chats?.length} messages.</Text>}
-                  <Chats key={index} {...chat} />
+                <View key={index}>
+                  {index === 0 && chats?.length > 20 && (
+                    <Text
+                      style={{
+                        alignSelf: "center",
+                        textAlign: "center",
+                        padding: 7,
+                        backgroundColor: "rgba(0,0,0,0.2)",
+                        marginBottom: 10,
+                        borderRadius: 3,
+                      }}
+                    >
+                      Last {chats?.length} messages.
+                    </Text>
+                  )}
+                  <Chats {...chat} />
                   {index === chats.length - 1 && (
-                    <Text style={{alignSelf:'flex-end',opacity:0.4}}>
+                    <Text style={{ alignSelf: "flex-end", opacity: 0.4 }}>
                       {chat?.is_read &&
                         user?.user_id === chat?.sender_id &&
                         "seen"}
                     </Text>
                   )}
-                </>
+                </View>
               );
             })}
         </ScrollView>

@@ -41,6 +41,7 @@ const ProfileMain = ({ navigation }) => {
           >
             <Text style={styles.touchableText}>Change Password</Text>
           </TouchableOpacity>
+          <Text style={{marginTop:20}}>Logout Your Account</Text>
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => {

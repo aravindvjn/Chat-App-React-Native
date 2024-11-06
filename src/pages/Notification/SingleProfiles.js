@@ -1,19 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Avatar from "../../Components/Avatar/Avatar";
 import { TouchableHighlight } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import AcceptOrReject from "../../Components/Operations/AcceptOrReject";
+import { UserContext } from "../../Global/Context/Context";
 
 const SingleProfiles = ({
   name = "",
   username = "",
   profile_pic_url = "",
   sender_id = "",
-  reqest_id = "",
+  request_id = "",
   user_id = "",
   size = 1,
+  setRefresh,
 }) => {
+  const { user } = useContext(UserContext);
   const navigation = useNavigation();
   const styles = StyleSheet.create({
     container: {
@@ -47,6 +51,13 @@ const SingleProfiles = ({
           <Text numberOfLines={1} style={styles.username}>
             @{username}
           </Text>
+          {request_id && sender_id && user && (
+            <AcceptOrReject
+              setRefresh={setRefresh}
+              id={user?.user_id}
+              req_id={request_id}
+            />
+          )}
         </View>
       </View>
     </TouchableOpacity>
