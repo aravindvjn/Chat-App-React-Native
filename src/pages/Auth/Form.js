@@ -11,9 +11,11 @@ import AuthHeading from "./AuthHeading";
 import { UserContext } from "../../Global/Context/Context";
 import { authFunction } from "../../Global/Services/authFunction";
 import api from "../../Global/Services/services";
+import PopUp from "../../Components/PopUp/PopUp";
 const Form = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const [input, setInput] = useState({
     name: "",
     username: "",
@@ -31,7 +33,7 @@ const Form = ({ navigation }) => {
     if (page === "Register") {
       const check = /^[a-z0-9_]{7,}$/;
       if (!check.test(input.username)) {
-        console.log(
+        setMessage(
           "The username must contain only lowercase letters, numbers, and underscores, and be more than 6 characters long."
         );
       } else if (
@@ -40,11 +42,11 @@ const Form = ({ navigation }) => {
         !input.username ||
         !input.cpassword
       ) {
-        console.log("input field cannot be empty.");
+        setMessage("input field cannot be empty.");
       } else if (input.password.length < 8) {
-        console.log("Password must be at least 8 characters long.");
+        setMessage("Password must be at least 8 characters long.");
       } else if (input.cpassword !== input.password) {
-        console.log(
+        setMessage(
           "Password do not match. Please make sure both fields are identical"
         );
       } else {
@@ -54,18 +56,20 @@ const Form = ({ navigation }) => {
               username: input.username,
             });
             if (response.status === 200) {
-              console.log("Username already exists.");
+              setMessage("Username already exists.");
             } else {
-              console.log("to Profile");
+              navigation.navigate("SetProfile", { state: input });
             }
           };
           fetchStatus();
         }
       }
     } else {
+      if (!input.password || !input.username) {
+        return setMessage("Fill the inputs.");
+      }
       setLoading(true);
       const response = await authFunction(input, "Login");
-      console.log(response);
       if (response.status === 200) {
         setUser({
           username: response.data.username,
@@ -78,7 +82,7 @@ const Form = ({ navigation }) => {
         navigation.navigate("Home");
         setLoading(false);
       } else {
-        console.log(response.message);
+        setMessage(response.message);
         setLoading(false);
       }
     }
@@ -88,6 +92,7 @@ const Form = ({ navigation }) => {
   };
   return (
     <View style={styles.center}>
+      {message && <PopUp message={message} setMessage={setMessage} />}
       <AuthHeading page={page} />
       {page === "Register" && (
         <>

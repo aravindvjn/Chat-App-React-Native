@@ -11,12 +11,11 @@ export const authFunction = async (input, page = "Login") => {
       await AsyncStorage.setItem("token", response.data.token);
       return response;
     } else {
-      console.log("Request failed with status:", response.status);
-      return false;
+      return response.data.message;
     }
   } catch (error) {
     if (error.response) {
-      console.error("Server error:", error.response.data);
+      return error.response.data;
     } else {
       console.error("Login error:", error.message);
     }
